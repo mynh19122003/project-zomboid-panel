@@ -133,49 +133,49 @@ export default function Dashboard({
     }
   }, [addLog]);
 
-  // Fetch system stats
+  // Fetch system stats - TEMPORARILY DISABLED
   const fetchSystemStats = useCallback(async () => {
-    try {
-      const response = await axios.get("/api/system");
-      setSystemStats(response.data);
-    } catch (error) {
-      console.error("Failed to fetch system stats:", error);
-    }
+    // try {
+    //   const response = await axios.get("/api/system");
+    //   setSystemStats(response.data);
+    // } catch (error) {
+    //   console.error("Failed to fetch system stats:", error);
+    // }
   }, []);
 
-  // Auto-refresh system stats every 5 seconds
-  useEffect(() => {
-    fetchSystemStats();
-    const interval = setInterval(fetchSystemStats, 5000);
-    return () => clearInterval(interval);
-  }, [fetchSystemStats]);
+  // Auto-refresh system stats every 5 seconds - TEMPORARILY DISABLED
+  // useEffect(() => {
+  //   fetchSystemStats();
+  //   const interval = setInterval(fetchSystemStats, 5000);
+  //   return () => clearInterval(interval);
+  // }, [fetchSystemStats]);
 
-  // Fetch server config (RAM allocation from StartServer64.bat)
-  useEffect(() => {
-    if (serverPath) {
-      axios
-        .get("/api/server-config", { params: { serverPath } })
-        .then((response) => setServerConfig(response.data))
-        .catch((err) => console.error("Failed to fetch server config:", err));
-    }
-  }, [serverPath]);
+  // Fetch server config (RAM allocation from StartServer64.bat) - TEMPORARILY DISABLED
+  // useEffect(() => {
+  //   if (serverPath) {
+  //     axios
+  //       .get("/api/server-config", { params: { serverPath } })
+  //       .then((response) => setServerConfig(response.data))
+  //       .catch((err) => console.error("Failed to fetch server config:", err));
+  //   }
+  // }, [serverPath]);
 
-  // Poll server logs every 2 seconds
-  useEffect(() => {
-    const fetchServerLogs = async () => {
-      try {
-        const response = await axios.get("/api/server-control");
-        setServerRunning(response.data.running);
-        setServerLogs(response.data.logs || []);
-      } catch (error) {
-        // Ignore errors
-      }
-    };
-
-    fetchServerLogs();
-    const interval = setInterval(fetchServerLogs, 2000);
-    return () => clearInterval(interval);
-  }, []);
+  // Poll server logs every 2 seconds - TEMPORARILY DISABLED
+  // useEffect(() => {
+  //   const fetchServerLogs = async () => {
+  //     try {
+  //       const response = await axios.get("/api/server-control");
+  //       setServerRunning(response.data.running);
+  //       setServerLogs(response.data.logs || []);
+  //     } catch (error) {
+  //       // Ignore errors
+  //     }
+  //   };
+  //
+  //   fetchServerLogs();
+  //   const interval = setInterval(fetchServerLogs, 2000);
+  //   return () => clearInterval(interval);
+  // }, []);
 
   // Save RCON config
   const saveConfig = () => {

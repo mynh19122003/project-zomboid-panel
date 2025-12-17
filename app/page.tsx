@@ -1,39 +1,43 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import ServerSettings from '@/components/ServerSettings'
-import ModManager from '@/components/ModManager'
-import NavSidebar from '@/components/NavSidebar'
-import Dashboard from '@/components/Dashboard'
-import Toast, { getStoredToast, StoredToast } from '@/components/Toast'
-import DatabaseViewer from '@/components/DatabaseViewer'
+import { useState, useEffect } from "react";
+import ServerSettings from "@/components/ServerSettings";
+import ModManager from "@/components/ModManager";
+import NavSidebar from "@/components/NavSidebar";
+import Dashboard from "@/components/Dashboard";
+import Toast, { getStoredToast, StoredToast } from "@/components/Toast";
+import DatabaseViewer from "@/components/DatabaseViewer";
 
 export default function Home() {
-  const [activeNav, setActiveNav] = useState<'dashboard' | 'settings' | 'mods' | 'database'>('dashboard')
-  const [serverPath, setServerPath] = useState<string>('')
-  const [serverStatus, setServerStatus] = useState<'online' | 'offline' | 'unknown'>('unknown')
-  const [toast, setToast] = useState<StoredToast | null>(null)
+  const [activeNav, setActiveNav] = useState<
+    "dashboard" | "settings" | "mods" | "database"
+  >("dashboard");
+  const [serverPath, setServerPath] = useState<string>("");
+  const [serverStatus, setServerStatus] = useState<
+    "online" | "offline" | "unknown"
+  >("unknown");
+  const [toast, setToast] = useState<StoredToast | null>(null);
 
   useEffect(() => {
-    const savedPath = localStorage.getItem('zomboidServerPath')
+    const savedPath = localStorage.getItem("zomboidServerPath");
     if (savedPath) {
-      setServerPath(savedPath)
+      setServerPath(savedPath);
     }
 
-    const storedToast = getStoredToast()
+    const storedToast = getStoredToast();
     if (storedToast) {
-      setToast(storedToast)
+      setToast(storedToast);
     }
-  }, [])
+  }, []);
 
   const handlePathChange = (path: string) => {
-    setServerPath(path)
-    localStorage.setItem('zomboidServerPath', path)
-  }
+    setServerPath(path);
+    localStorage.setItem("zomboidServerPath", path);
+  };
 
-  const handleStatusChange = (status: 'online' | 'offline' | 'checking') => {
-    setServerStatus(status === 'checking' ? 'unknown' : status)
-  }
+  const handleStatusChange = (status: "online" | "offline" | "checking") => {
+    setServerStatus(status === "checking" ? "unknown" : status);
+  };
 
   return (
     <div className="min-h-screen bg-zinc-950">
@@ -49,15 +53,17 @@ export default function Home() {
       {/* Sidebar */}
       <NavSidebar
         activeItem={activeNav}
-        onItemClick={(id) => setActiveNav(id as 'dashboard' | 'settings' | 'mods' | 'database')}
+        onItemClick={(id) =>
+          setActiveNav(id as "dashboard" | "settings" | "mods" | "database")
+        }
         serverStatus={serverStatus}
       />
 
       {/* Main Content */}
-      <main className="ml-64 min-h-screen transition-all duration-300">
+      <main className="ml-64 min-h-screen transition-all duration-300 bg-slate-100 dark:bg-transparent">
         <div className="p-6">
           {/* Server Path Configuration - Only show for settings/mods/database */}
-          {activeNav !== 'dashboard' && (
+          {activeNav !== "dashboard" && (
             <div className="mb-6 flex items-center gap-4">
               <div className="flex-1">
                 <div className="flex items-center gap-3">
@@ -74,19 +80,22 @@ export default function Home() {
                   <input
                     type="file"
                     id="folderPicker"
-                    {...({ webkitdirectory: '', directory: '' } as any)}
-                    style={{ display: 'none' }}
+                    {...({ webkitdirectory: "", directory: "" } as any)}
+                    style={{ display: "none" }}
                     onChange={(e) => {
-                      const files = e.target.files
+                      const files = e.target.files;
                       if (files && files.length > 0) {
-                        const path = prompt('Nhập đường dẫn thư mục server:', serverPath || '')
-                        if (path) handlePathChange(path)
+                        const path = prompt(
+                          "Nhập đường dẫn thư mục server:",
+                          serverPath || ""
+                        );
+                        if (path) handlePathChange(path);
                       }
                     }}
                   />
                   <button
                     onClick={() => {
-                      document.getElementById('folderPicker')?.click()
+                      document.getElementById("folderPicker")?.click();
                     }}
                     className="px-4 py-3 bg-zinc-700 hover:bg-zinc-600 text-white rounded-xl transition-colors flex items-center gap-2 text-sm"
                   >
@@ -100,18 +109,22 @@ export default function Home() {
 
           {/* Page Content */}
           <div className="animate-fade-in">
-            {activeNav === 'dashboard' && (
-              <Dashboard 
-                serverPath={serverPath} 
+            {activeNav === "dashboard" && (
+              <Dashboard
+                serverPath={serverPath}
                 onStatusChange={handleStatusChange}
               />
             )}
-            {activeNav === 'settings' && <ServerSettings serverPath={serverPath} />}
-            {activeNav === 'mods' && <ModManager serverPath={serverPath} />}
-            {activeNav === 'database' && <DatabaseViewer serverPath={serverPath} />}
+            {activeNav === "settings" && (
+              <ServerSettings serverPath={serverPath} />
+            )}
+            {activeNav === "mods" && <ModManager serverPath={serverPath} />}
+            {activeNav === "database" && (
+              <DatabaseViewer serverPath={serverPath} />
+            )}
           </div>
         </div>
       </main>
     </div>
-  )
+  );
 }

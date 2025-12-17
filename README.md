@@ -1,105 +1,175 @@
-# Project Zomboid UI Mod Manager
+# 🧟 PZ Mod Manager
 
-Web application để quản lý server Project Zomboid, bao gồm:
-- Quản lý cấu hình server (server settings)
-- Quản lý mod từ Steam Workshop
-- Thêm/xóa mod
-- Tìm kiếm mod trên Steam Workshop
+<div align="center">
 
-## Cài đặt
+![Logo](./public/assets/logo.gif)
 
-### Development
+**Ứng dụng quản lý Server và Mod cho Project Zomboid**
+
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind-3-38bdf8?style=for-the-badge&logo=tailwindcss)](https://tailwindcss.com/)
+
+</div>
+
+---
+
+## ✨ Tính năng
+
+- 📊 **Dashboard** - Tổng quan server với RCON console
+- ⚙️ **Cài đặt Server** - Chỉnh sửa file `servertest.ini` và `SandboxVars.lua`
+- 📦 **Quản lý Mod** - Xem, thêm, xóa mod từ Steam Workshop
+- 🌓 **Dark/Light Mode** - Chuyển đổi giao diện sáng/tối với animation
+- 🔌 **RCON Integration** - Kết nối và điều khiển server qua RCON
+
+---
+
+## 🚀 Cài đặt
+
+### Yêu cầu
+
+- [Node.js](https://nodejs.org/) >= 18.x
+- [npm](https://www.npmjs.com/) hoặc [yarn](https://yarnpkg.com/)
+- Project Zomboid Dedicated Server
+
+### Bước 1: Clone project
+
+```bash
+git clone https://github.com/your-username/project-zomboid-UI-mod-manger.git
+cd project-zomboid-UI-mod-manger
+```
+
+### Bước 2: Cài đặt dependencies
 
 ```bash
 npm install
+```
+
+### Bước 3: Cấu hình môi trường
+
+Tạo file `.env.local` trong thư mục gốc:
+
+```env
+# Steam API Key (để lấy thông tin mod từ Workshop)
+STEAM_API_KEY=your_steam_api_key_here
+
+# Đường dẫn mặc định đến thư mục server (tùy chọn)
+ZOMBOID_SERVER_PATH=F:\servers\Zomboid\Server
+```
+
+### Bước 4: Chạy ứng dụng
+
+```bash
+# Development mode
 npm run dev
-```
 
-Mở [http://localhost:3000](http://localhost:3000) trong trình duyệt.
-
-### Production với Docker (Khuyến nghị)
-
-Xem [DOCKER.md](./DOCKER.md) để biết hướng dẫn chi tiết.
-
-**Quick start:**
-
-```bash
-# Tạo file .env với Steam API key
-echo "STEAM_API_KEY=your_steam_api_key_here" > .env
-
-# Chỉnh sửa docker-compose.yml để mount thư mục server của bạn
-# Sau đó build và chạy:
-docker-compose up -d
-```
-
-## Cấu hình
-
-### Development
-
-Tạo file `.env.local` với các biến môi trường:
-
-```
-STEAM_API_KEY=your_steam_api_key_here
-ZOMBOID_SERVER_PATH=C:\Users\YourName\Zomboid\Server
-```
-
-### Production (Docker)
-
-Tạo file `.env` hoặc set environment variables:
-
-```
-STEAM_API_KEY=your_steam_api_key_here
-```
-
-## Tính năng
-
-- ✅ Quản lý server settings
-- ✅ Quản lý mod list
-- ✅ Tích hợp Steam Workshop API
-- ✅ Tìm kiếm và thêm mod từ Steam Workshop
-- ✅ Thêm mod bằng Steam ID, tên mod, hoặc link Workshop
-- ✅ Đọc toàn bộ WorkshopItems từ file server
-- ✅ Hiển thị hình ảnh và thông tin chi tiết mod
-
-## Deploy lên Host (Không cần Docker)
-
-### Cách Nhanh Nhất
-
-1. **Package ứng dụng:**
-```bash
-# Windows
-package-for-deploy.bat
-
-# Linux/Mac
-chmod +x package-for-deploy.sh
-./package-for-deploy.sh
-```
-
-2. **Upload thư mục `deploy-package/` lên host**
-
-3. **Trên host:**
-```bash
-# Tạo file .env
-nano .env
-# (Nhập STEAM_API_KEY và các biến khác)
-
-# Cài đặt và chạy
-npm install --production
+# Production build
+npm run build
 npm start
 ```
 
-Xem file [QUICK_DEPLOY.md](./QUICK_DEPLOY.md) để biết hướng dẫn chi tiết và đơn giản nhất.
+Mở trình duyệt và truy cập: **http://localhost:3000**
 
-Xem file [DEPLOY.md](./DEPLOY.md) để biết hướng dẫn nâng cao về:
-- Sử dụng PM2 để quản lý process
-- Cấu hình Nginx reverse proxy
-- Deploy lên shared hosting
+---
 
-## Docker Deployment
+## 📁 Cấu trúc dự án
 
-Xem file [DOCKER.md](./DOCKER.md) để biết hướng dẫn chi tiết về:
-- Build và chạy với Docker
-- Cấu hình volumes
-- Production deployment
-- Troubleshooting
+```
+project-zomboid-UI-mod-manger/
+├── app/                    # Next.js App Router
+│   ├── api/               # API Routes
+│   │   ├── files/         # Đọc/ghi file config
+│   │   ├── mods/          # Quản lý mod
+│   │   ├── rcon/          # RCON connection
+│   │   └── steam-workshop/ # Steam Workshop API
+│   ├── globals.css        # Global styles + Dark/Light mode
+│   ├── layout.tsx         # Root layout
+│   └── page.tsx           # Main page
+├── components/            # React components
+│   ├── Dashboard.tsx      # Dashboard chính
+│   ├── ServerSettings.tsx # Cài đặt server
+│   ├── ModManager.tsx     # Quản lý mod
+│   ├── NavSidebar.tsx     # Sidebar navigation
+│   ├── GlassDropdown.tsx  # Custom dropdown
+│   └── Toast.tsx          # Toast notifications
+├── data/                  # Metadata
+│   ├── serverSettingsMeta.ts  # Mô tả settings INI
+│   └── sandboxVarsMeta.ts     # Mô tả SandboxVars
+├── public/
+│   └── assets/
+│       └── logo.gif       # Logo animation
+└── tailwind.config.js     # Tailwind configuration
+```
 
+---
+
+## ⚙️ Cấu hình trong code
+
+### Dark/Light Mode
+
+Được cấu hình trong `tailwind.config.js`:
+
+```javascript
+module.exports = {
+  darkMode: "class", // Class-based dark mode
+  // ...
+};
+```
+
+Theme được lưu trong `localStorage` với key `theme`.
+
+### RCON Settings
+
+Cấu hình RCON được lưu trong `localStorage`:
+
+```javascript
+{
+  host: "127.0.0.1",
+  port: 27015,
+  password: "your_rcon_password"
+}
+```
+
+### Server Settings Metadata
+
+Định nghĩa trong `data/serverSettingsMeta.ts`:
+
+```typescript
+export const COMMON_SETTINGS = [
+  { key: 'ServerName', label: 'Server Name', type: 'string', ... },
+  { key: 'MaxPlayers', label: 'Max Players', type: 'integer', ... },
+  // ...
+]
+```
+
+### API Endpoints
+
+| Endpoint              | Method         | Mô tả                         |
+| --------------------- | -------------- | ----------------------------- |
+| `/api/files/list`     | GET            | Liệt kê file trong thư mục    |
+| `/api/files/read`     | GET/POST       | Đọc/ghi file config           |
+| `/api/mods`           | GET/PUT/DELETE | Quản lý mod                   |
+| `/api/rcon`           | POST           | Gửi lệnh RCON                 |
+| `/api/steam-workshop` | GET            | Lấy thông tin mod từ Workshop |
+
+---
+
+## 🎨 Screenshots
+
+> _Coming soon..._
+
+---
+
+## 📝 License
+
+MIT License - Xem file [LICENSE](LICENSE) để biết thêm chi tiết.
+
+---
+
+<div align="center">
+
+**Made with ❤️ by bủ**
+
+_@2025_
+
+</div>

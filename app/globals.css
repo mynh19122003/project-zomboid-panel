@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Dark mode (default) */
 :root {
   --foreground: 255, 255, 255;
   --background: 10, 10, 10;
@@ -9,16 +10,32 @@
   --glass-border: 255, 255, 255;
 }
 
-/* Animated gradient background */
-body {
+/* Light mode */
+html:not(.dark) {
+  --foreground: 30, 30, 30;
+  --background: 250, 250, 250;
+  --glass-bg: 0, 0, 0;
+  --glass-border: 0, 0, 0;
+}
+
+/* Dark mode background */
+.dark body {
   color: rgb(var(--foreground));
   background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
   background-attachment: fixed;
   min-height: 100vh;
 }
 
-/* Add subtle noise texture */
-body::before {
+/* Light mode background */
+html:not(.dark) body {
+  color: rgb(var(--foreground));
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #f8fafc 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* Add subtle noise texture (dark mode only) */
+.dark body::before {
   content: '';
   position: fixed;
   top: 0;
@@ -28,6 +45,190 @@ body::before {
   opacity: 0.03;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* ===== LIGHT MODE GLOBAL OVERRIDES ===== */
+/* Cards and containers */
+html:not(.dark) .bg-zinc-800 {
+  background-color: white !important;
+  border-color: #e5e7eb !important;
+}
+
+html:not(.dark) .bg-zinc-900 {
+  background-color: #f9fafb !important;
+}
+
+html:not(.dark) .bg-zinc-700 {
+  background-color: #f3f4f6 !important;
+}
+
+html:not(.dark) .bg-zinc-950 {
+  background-color: #f8fafc !important;
+}
+
+/* Borders */
+html:not(.dark) .border-zinc-700,
+html:not(.dark) .border-zinc-600 {
+  border-color: #e5e7eb !important;
+}
+
+/* Text colors */
+html:not(.dark) .text-white {
+  color: #1f2937 !important;
+}
+
+/* Text white with opacity variants */
+html:not(.dark) [class*="text-white\/"] {
+  color: #374151 !important;
+}
+
+html:not(.dark) .text-white\/80 {
+  color: #1f2937 !important;
+}
+
+html:not(.dark) .text-white\/70 {
+  color: #374151 !important;
+}
+
+html:not(.dark) .text-white\/60 {
+  color: #4b5563 !important;
+}
+
+html:not(.dark) .text-white\/50 {
+  color: #6b7280 !important;
+}
+
+html:not(.dark) .text-white\/40 {
+  color: #9ca3af !important;
+}
+
+html:not(.dark) .text-zinc-400 {
+  color: #6b7280 !important;
+}
+
+html:not(.dark) .text-zinc-500 {
+  color: #6b7280 !important;
+}
+
+html:not(.dark) .text-zinc-300 {
+  color: #374151 !important;
+}
+
+/* Inputs */
+html:not(.dark) input,
+html:not(.dark) textarea,
+html:not(.dark) select {
+  background-color: #f9fafb !important;
+  color: #1f2937 !important;
+  border-color: #d1d5db !important;
+}
+
+html:not(.dark) input::placeholder,
+html:not(.dark) textarea::placeholder {
+  color: #9ca3af !important;
+}
+
+/* Buttons */
+html:not(.dark) .bg-zinc-700:hover,
+html:not(.dark) .hover\:bg-zinc-600:hover {
+  background-color: #e5e7eb !important;
+}
+
+/* btn-glass and btn-primary-glass for light mode */
+html:not(.dark) .btn-glass {
+  background-color: #e5e7eb !important;
+  border-color: #d1d5db !important;
+  color: #374151 !important;
+}
+
+html:not(.dark) .btn-glass:hover {
+  background-color: #d1d5db !important;
+}
+
+html:not(.dark) .btn-primary-glass {
+  background-color: #3b82f6 !important;
+  border-color: #2563eb !important;
+  color: white !important;
+}
+
+html:not(.dark) .btn-primary-glass:hover {
+  background-color: #2563eb !important;
+}
+
+/* Dropdown components for light mode */
+html:not(.dark) [class*="bg-zinc-800"] {
+  background-color: white !important;
+}
+
+html:not(.dark) .bg-zinc-500 {
+  background-color: #6b7280 !important;
+}
+
+/* Fix dropdown text visibility */
+html:not(.dark) .text-zinc-600 {
+  color: #4b5563 !important;
+}
+
+/* Icon colors */
+html:not(.dark) .lni {
+  color: inherit;
+}
+
+/* Special override for white background with opacity */
+html:not(.dark) [class*="bg-white\/"] {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+}
+
+html:not(.dark) .bg-white\/10 {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+}
+
+html:not(.dark) .bg-white\/20 {
+  background-color: rgba(59, 130, 246, 0.15) !important;
+}
+
+html:not(.dark) .bg-white\/5 {
+  background-color: rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Scrollbar for light mode */
+html:not(.dark) ::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+html:not(.dark) ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+html:not(.dark) ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Black backgrounds in cards/logs */
+html:not(.dark) .bg-black\/50,
+html:not(.dark) .bg-black {
+  background-color: #f3f4f6 !important;
+}
+
+/* Glass components light mode override */
+html:not(.dark) .glass,
+html:not(.dark) .glass-strong,
+html:not(.dark) .glass-card {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  border-color: #d1d5db !important;
+  backdrop-filter: blur(10px);
+}
+
+/* Input glass for light mode */
+html:not(.dark) .input-glass {
+  background-color: #f9fafb !important;
+  border-color: #d1d5db !important;
+  color: #1f2937 !important;
+}
+
+html:not(.dark) .input-glass:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
 }
 
 @layer utilities {
