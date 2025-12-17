@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  zomboid-mod-manager:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: zomboid-mod-manager
+    ports:
+      - "80:80"    # Web port
+      - "36:36"    # Server-side port (internal API)
+    environment:
+      - NODE_ENV=production
+      - PORT=80
+      - STEAM_API_KEY=${STEAM_API_KEY:-}
+    volumes:
+      # Mount server directory để có thể truy cập file server
+      - ./server-data:/app/server-data:ro
+      # Hoặc mount trực tiếp thư mục server của bạn
+      # - /path/to/your/zomboid/server:/app/server-data:ro
+    restart: unless-stopped
+    networks:
+      - zomboid-network
+
+networks:
+  zomboid-network:
+    driver: bridge
+
+
+
+
+
