@@ -76,8 +76,48 @@ export async function POST(request: NextRequest) {
             previewUrl = ''
           }
 
+          // Parse Mod ID từ description
+          // Format thường gặp trong Steam Workshop:
+          // "-- \BB_CommonSense;\CSB42MP" (Mod IDs)
+          // "-- 2875848298;3623609320" (Workshop IDs)
+          // Hoặc: "Mod ID: ModName"
+          let modId = ''
+          const description = detail.description || ''
+          
+          // Pattern 1: Tìm format "-- \ModName" hoặc "-- ModName" (dòng ngay trước workshop IDs)
+          // Thường xuất hiện như: "-- \BB_CommonSense;\CSB42MP\n-- 2875848298;3623609320"
+          const dedicatedServerPattern = /--\s*\\?([A-Za-z_][A-Za-z0-9_;\\]*?)(?:\s*\n\s*--\s*\d)/
+          const dedicatedMatch = description.match(dedicatedServerPattern)
+          if (dedicatedMatch && dedicatedMatch[1]) {
+            // Lấy mod ID đầu tiên (có thể có nhiều mod, cách nhau bằng ;)
+            const modIds = dedicatedMatch[1].replace(/\\/g, '').split(';').filter(Boolean)
+            if (modIds.length > 0) {
+              modId = modIds[0].trim()
+              console.log(`Found Mod ID "${modId}" from dedicated server format for workshop item ${detail.publishedfileid}`)
+            }
+          }
+          
+          // Pattern 2: Nếu không tìm thấy, thử các pattern khác
+          if (!modId) {
+            const modIdPatterns = [
+              /Mod\s*ID[:\s]+([A-Za-z_][A-Za-z0-9_]*)/i,
+              /ModID[:\s]+([A-Za-z_][A-Za-z0-9_]*)/i,
+              /Mod_ID[:\s]+([A-Za-z_][A-Za-z0-9_]*)/i,
+            ]
+            
+            for (const pattern of modIdPatterns) {
+              const match = description.match(pattern)
+              if (match && match[1]) {
+                modId = match[1].trim()
+                console.log(`Found Mod ID "${modId}" for workshop item ${detail.publishedfileid}`)
+                break
+              }
+            }
+          }
+
           modDetails[detail.publishedfileid] = {
             id: detail.publishedfileid,
+            modId: modId, // Mod ID được parse từ description
             title: detail.title || detail.publishedfileid,
             description: detail.description || '',
             preview_url: previewUrl,

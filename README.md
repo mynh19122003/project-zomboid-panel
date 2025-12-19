@@ -1,4 +1,4 @@
-# 🧟 PZ Mod Manager
+# PZ Mod Manager
 
 <div align="center">
 
@@ -14,17 +14,17 @@
 
 ---
 
-## ✨ Tính năng
+## ![Features](https://img.shields.io/badge/-Features-blueviolet?style=flat-square) Tính năng
 
-- 📊 **Dashboard** - Tổng quan server với RCON console
-- ⚙️ **Cài đặt Server** - Chỉnh sửa file `servertest.ini` và `SandboxVars.lua`
-- 📦 **Quản lý Mod** - Xem, thêm, xóa mod từ Steam Workshop
-- 🌓 **Dark/Light Mode** - Chuyển đổi giao diện sáng/tối với animation
-- 🔌 **RCON Integration** - Kết nối và điều khiển server qua RCON
+- ![Dashboard](https://img.shields.io/badge/-Dashboard-informational?style=flat-square&logo=speedtest) **Dashboard** - Tổng quan server với RCON console
+- ![Settings](https://img.shields.io/badge/-Settings-success?style=flat-square&logo=gearbox) **Cài đặt Server** - Chỉnh sửa file `servertest.ini` và `SandboxVars.lua`
+- ![Mods](https://img.shields.io/badge/-Mods-orange?style=flat-square&logo=steam) **Quản lý Mod** - Xem, thêm, xóa mod từ Steam Workshop
+- ![Theme](https://img.shields.io/badge/-Theme-lightgrey?style=flat-square&logo=contrast) **Dark/Light Mode** - Chuyển đổi giao diện sáng/tối với animation
+- ![RCON](https://img.shields.io/badge/-RCON-critical?style=flat-square&logo=plugs) **RCON Integration** - Kết nối và điều khiển server qua RCON
 
 ---
 
-## 🚀 Cài đặt
+## ![Installation](https://img.shields.io/badge/-Installation-brightgreen?style=flat-square) Cài đặt
 
 ### Yêu cầu
 
@@ -72,7 +72,7 @@ Mở trình duyệt và truy cập: **http://localhost:3000**
 
 ---
 
-## 📁 Cấu trúc dự án
+## ![Structure](https://img.shields.io/badge/-Structure-blue?style=flat-square) Cấu trúc dự án
 
 ```
 project-zomboid-UI-mod-manger/
@@ -103,7 +103,7 @@ project-zomboid-UI-mod-manger/
 
 ---
 
-## ⚙️ Cấu hình trong code
+## ![Config](https://img.shields.io/badge/-Config-yellow?style=flat-square) Cấu hình trong code
 
 ### Dark/Light Mode
 
@@ -154,13 +154,13 @@ export const COMMON_SETTINGS = [
 
 ---
 
-## 🎨 Screenshots
+## ![Screenshots](https://img.shields.io/badge/-Screenshots-ff69b4?style=flat-square) Screenshots
 
 > _Coming soon..._
 
 ---
 
-## 📝 License
+## ![License](https://img.shields.io/badge/-License-lightgrey?style=flat-square) License
 
 MIT License - Xem file [LICENSE](LICENSE) để biết thêm chi tiết.
 
@@ -168,7 +168,7 @@ MIT License - Xem file [LICENSE](LICENSE) để biết thêm chi tiết.
 
 <div align="center">
 
-**Made with ❤️ by bủ**
+[![Made with Love](https://img.shields.io/badge/Made%20with-Love-red?style=for-the-badge&logo=heart)](https://github.com)
 
 _@2025_
 

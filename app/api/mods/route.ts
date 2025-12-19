@@ -251,24 +251,57 @@ export async function POST(request: NextRequest) {
     let content = fs.readFileSync(iniPath, 'utf-8')
     const lines = content.split('\n')
 
-    // Tách mods thành regular mods và workshop items
-    const regularMods = mods.filter((m: any) => !m.workshopId).map((m: any) => m.id)
-    const workshopItems = mods.filter((m: any) => m.workshopId).map((m: any) => m.workshopId || m.id)
+    // Workshop mods: cần ghi vào cả Mods= và WorkshopItems=
+    // - Mods= chứa mod ID (tên mod từ info.txt, hoặc modId field)
+    // - WorkshopItems= chứa workshop ID để Steam tải mod
+    
+    // Lấy tất cả mod IDs cho dòng Mods=
+    // Ưu tiên: modId (parse từ description) > id (có thể là workshop ID nếu chưa có modId)
+    const allModIds = mods.map((m: any) => {
+      // Nếu có modId (parse từ Steam description), dùng nó
+      if (m.modId) return m.modId
+      // Nếu không, dùng id (có thể là workshop ID hoặc mod name)
+      return m.id
+    }).filter(Boolean)
+    
+    // Lấy workshop IDs riêng cho dòng WorkshopItems= (chỉ các mods có workshopId hoặc ID là số)
+    const workshopItems = mods
+      .filter((m: any) => m.workshopId || /^\d+$/.test(m.id))
+      .map((m: any) => m.workshopId || m.id)
+      .filter(Boolean)
 
-    // Cập nhật Mods=
+    console.log('Saving mods:')
+    console.log('  Mod IDs (for Mods=):', allModIds)
+    console.log('  Workshop IDs (for WorkshopItems=):', workshopItems.length, 'items')
+
+    // Cập nhật Mods= (chứa mod IDs - tên mod với format \mod_1;\mod_2)
     const modsLineIndex = lines.findIndex(line => /^Mods\s*=/i.test(line.trim()))
+    // Format: thêm backslash trước mỗi mod ID, ví dụ: \mod_1;\mod_2
+    const modsValue = allModIds.map((id: string) => `\\${id}`).join(';')
     if (modsLineIndex !== -1) {
-      lines[modsLineIndex] = `Mods=${regularMods.join(';')}`
-    } else if (regularMods.length > 0) {
-      lines.push(`Mods=${regularMods.join(';')}`)
+      lines[modsLineIndex] = `Mods=${modsValue}`
+      console.log('  Updated Mods= at line', modsLineIndex, ':', modsValue)
+    } else if (allModIds.length > 0) {
+      // Tìm vị trí sau comment "# Enter the mod loading ID here"
+      const commentIndex = lines.findIndex(line => line.includes('# Enter the mod loading ID here'))
+      if (commentIndex !== -1) {
+        lines.splice(commentIndex + 1, 0, `Mods=${modsValue}`)
+        console.log('  Inserted Mods= after comment at line', commentIndex + 1)
+      } else {
+        lines.push(`Mods=${modsValue}`)
+        console.log('  Appended Mods= at end of file')
+      }
     }
 
-    // Cập nhật WorkshopItems=
+    // Cập nhật WorkshopItems= (chứa workshop IDs - số ID trên Steam)
     const workshopLineIndex = lines.findIndex(line => /^WorkshopItems\s*=/i.test(line.trim()))
+    const workshopValue = workshopItems.join(';')
     if (workshopLineIndex !== -1) {
-      lines[workshopLineIndex] = `WorkshopItems=${workshopItems.join(';')}`
+      lines[workshopLineIndex] = `WorkshopItems=${workshopValue}`
+      console.log('  Updated WorkshopItems= at line', workshopLineIndex)
     } else if (workshopItems.length > 0) {
-      lines.push(`WorkshopItems=${workshopItems.join(';')}`)
+      lines.push(`WorkshopItems=${workshopValue}`)
+      console.log('  Appended WorkshopItems= at end of file')
     }
 
     fs.writeFileSync(iniPath, lines.join('\n'), 'utf-8')

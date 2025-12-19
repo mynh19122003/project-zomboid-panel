@@ -6,11 +6,13 @@ export interface Mod {
   id: string
   name: string
   workshopId?: string
+  modId?: string  // Mod ID parsed from Steam description (different from workshopId)
   details?: ModDetails
 }
 
 export interface ModDetails {
   id: string
+  modId?: string  // Mod ID parsed from Steam description
   title: string
   description: string
   preview_url?: string
