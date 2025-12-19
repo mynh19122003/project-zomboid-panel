@@ -168,7 +168,7 @@ MIT License - Xem file [LICENSE](LICENSE) để biết thêm chi tiết.
 
 <div align="center">
 
-[![Made with Love](https://img.shields.io/badge/Made%20with-Love-red?style=for-the-badge&logo=heart)](https://github.com)
+[![Made by Mynh](https://img.shields.io/badge/Made%20by-Mynh-red?style=for-the-badge&logo=heart)](https://github.com/mynh19122003)
 
 _@2025_
 
